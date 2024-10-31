@@ -1,0 +1,521 @@
+about:
+  date: October 31, 2024 12:08:13
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Category:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents a category to which tasks can belong.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents a category to which tasks can belong.
+    label: Category
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - category_id
+      name: TaskCategoryList
+      resource: TaskCategory
+    type: Category
+  DailyGoal:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: goal_date
+      required: true
+      type: DATETIME
+    - name: target_completed_tasks
+      required: true
+      template: integer
+      type: INTEGER
+    - name: actual_completed_tasks
+      template: integer
+      type: INTEGER
+    description: Represents daily goals set by a user.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents daily goals set by a user.
+    label: DailyGoal
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: DailyGoal
+  Dashboard:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: created_date
+      type: DATETIME
+    - name: last_updated
+      type: DATETIME
+    description: Represents a user dashboard displaying task progress.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents a user dashboard displaying task progress.
+    label: Dashboard
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - dashboard_id
+      name: ProgressReportList
+      resource: ProgressReport
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Dashboard
+  Feedback:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: feedback_date
+      required: true
+      type: DATETIME
+    - name: feedback_text
+      required: true
+      template: text
+      type: TEXT
+    description: Represents feedback provided by users regarding the task system.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents feedback provided by users regarding the task system.
+    label: Feedback
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Feedback
+  PriorityLevel:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: rank
+      required: true
+      template: integer
+      type: INTEGER
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Defines different levels of priority for tasks.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Defines different levels of priority for tasks.
+    label: PriorityLevel
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: PriorityLevel
+  ProgressReport:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: dashboard_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: report_date
+      required: true
+      type: DATETIME
+    - name: tasks_pending
+      template: integer
+      type: INTEGER
+    - name: tasks_completed
+      template: integer
+      type: INTEGER
+    description: Records detailed progress reports for tasks within a dashboard.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Records detailed progress reports for tasks within a dashboard.
+    label: ProgressReport
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - dashboard_id
+      name: dashboard
+      resource: Dashboard
+    type: ProgressReport
+  Reward:
+    columns:
+    - label: ' description*'
+      name: description
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: points
+      required: true
+      template: integer
+      type: INTEGER
+    - name: claim_deadline
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents a reward for completing tasks on time.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Represents a reward for completing tasks on time.
+    label: Reward
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - reward_id
+      name: UserRewardList
+      resource: UserReward
+    type: Reward
+  Task:
+    columns:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+      template: text
+      type: TEXT
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: title
+      required: true
+      template: text
+      type: VARCHAR
+    - name: due_date
+      required: true
+      type: DATETIME
+    - name: priority
+      required: true
+      template: integer
+      type: INTEGER
+    - name: id
+      template: integer
+      type: INTEGER
+    - name: is_completed
+      template: text
+      type: BOOLEAN
+    description: Represents a task assigned to a user that needs to be completed.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Represents a task assigned to a user that needs to be completed.
+    label: Task
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - task_id
+      name: TaskCategoryList
+      resource: TaskCategory
+    - direction: tomany
+      fks:
+      - task_id
+      name: TaskHistoryList
+      resource: TaskHistory
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Task
+  TaskCategory:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: category_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: task_id
+      required: true
+      template: integer
+      type: INTEGER
+    description: A junction table for tasks and categories, allowing many-to-many
+      relationship.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: A junction table for tasks and categories, allowing many-to-many relationship.
+    label: TaskCategory
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - category_id
+      name: category
+      resource: Category
+    - direction: toone
+      fks:
+      - task_id
+      name: task
+      resource: Task
+    type: TaskCategory
+  TaskHistory:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: task_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: change_date
+      required: true
+      type: DATETIME
+    - name: status
+      required: true
+      template: text
+      type: VARCHAR
+    description: Keeps a history of task status changes.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Keeps a history of task status changes.
+    label: TaskHistory
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - task_id
+      name: task
+      resource: Task
+    type: TaskHistory
+  User:
+    columns:
+    - label: ' username*'
+      name: username
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: email
+      required: true
+      template: text
+      type: VARCHAR
+    - name: join_date
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    - name: password
+      required: true
+      template: text
+      type: VARCHAR
+    description: Represents a user within the task management system.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: username
+    home_template: home_template.html
+    info_list: Represents a user within the task management system.
+    label: User
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - user_id
+      name: DailyGoalList
+      resource: DailyGoal
+    - direction: tomany
+      fks:
+      - user_id
+      name: DashboardList
+      resource: Dashboard
+    - direction: tomany
+      fks:
+      - user_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - user_id
+      name: TaskList
+      resource: Task
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserRewardList
+      resource: UserReward
+    type: User
+  UserReward:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: reward_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: claim_date
+      required: true
+      type: DATETIME
+    description: A junction table linking users and rewards they've claimed.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: A junction table linking users and rewards they've claimed.
+    label: UserReward
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - reward_id
+      name: reward
+      resource: Reward
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: UserReward
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false

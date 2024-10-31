@@ -1,0 +1,120 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+Category: Represents a category to which tasks can belong.
+DailyGoal: Represents daily goals set by a user.
+User: Represents a user within the task management system.
+Dashboard: Represents a user dashboard displaying task progress.
+Feedback: Represents feedback provided by users regarding the task system.
+PriorityLevel: Defines different levels of priority for tasks.
+ProgressReport: Records detailed progress reports for tasks within a dashboard.
+Reward: Represents a reward for completing tasks on time.
+Task: Represents a task assigned to a user that needs to be completed.
+TaskCategory: A junction table for tasks and categories, allowing many-to-many relationship.
+TaskHistory: Keeps a history of task status changes.
+UserReward: A junction table linking users and rewards they've claimed.
+'''
+}
+
+Table Category {
+    id INTEGER [primary key]
+    name VARCHAR 
+    }
+
+Table DailyGoal {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    goal_date DATETIME 
+    target_completed_tasks INTEGER 
+    actual_completed_tasks INTEGER 
+    }
+
+Table User {
+    id INTEGER [primary key]
+    username VARCHAR 
+    email VARCHAR 
+    password VARCHAR 
+    join_date DATETIME 
+    }
+
+Table Dashboard {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    created_date DATETIME 
+    last_updated DATETIME 
+    }
+
+Table Feedback {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    feedback_date DATETIME 
+    feedback_text TEXT 
+    }
+
+Table PriorityLevel {
+    id INTEGER [primary key]
+    name VARCHAR 
+    rank INTEGER 
+    }
+
+Table ProgressReport {
+    id INTEGER [primary key]
+    dashboard_id INTEGER 
+    report_date DATETIME 
+    tasks_completed INTEGER 
+    tasks_pending INTEGER 
+    }
+
+Table Reward {
+    id INTEGER [primary key]
+    description VARCHAR 
+    points INTEGER 
+    claim_deadline DATETIME 
+    }
+
+Table Task {
+    id INTEGER [primary key]
+    title VARCHAR 
+    description TEXT 
+    due_date DATETIME 
+    priority INTEGER 
+    is_completed BOOLEAN 
+    user_id INTEGER 
+    }
+
+Table TaskCategory {
+    id INTEGER [primary key]
+    task_id INTEGER 
+    category_id INTEGER 
+    }
+
+Table TaskHistory {
+    id INTEGER [primary key]
+    task_id INTEGER 
+    change_date DATETIME 
+    status VARCHAR 
+    }
+
+Table UserReward {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    reward_id INTEGER 
+    claim_date DATETIME 
+    }
+
+
+
+// Relationships
+    Ref: DailyGoal.(user_id) < User.(id)
+    Ref: Dashboard.(user_id) < User.(id)
+    Ref: Feedback.(user_id) < User.(id)
+    Ref: ProgressReport.(dashboard_id) < Dashboard.(id)
+    Ref: Task.(user_id) < User.(id)
+    Ref: TaskCategory.(category_id) < Category.(id)
+    Ref: TaskCategory.(task_id) < Task.(id)
+    Ref: TaskHistory.(task_id) < Task.(id)
+    Ref: UserReward.(reward_id) < Reward.(id)
+    Ref: UserReward.(user_id) < User.(id)

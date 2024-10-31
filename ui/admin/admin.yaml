@@ -1,0 +1,351 @@
+about:
+  date: October 31, 2024 12:08:13
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 10
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Category:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    description: Represents a category to which tasks can belong.
+    info_list: Represents a category to which tasks can belong.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - category_id
+      name: TaskCategoryList
+      resource: TaskCategory
+    type: Category
+    user_key: name
+  DailyGoal:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: user_id
+      required: true
+    - name: goal_date
+      required: true
+      type: DATETIME
+    - name: target_completed_tasks
+      required: true
+    - name: actual_completed_tasks
+    description: Represents daily goals set by a user.
+    info_list: Represents daily goals set by a user.
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: DailyGoal
+    user_key: id
+  Dashboard:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: user_id
+      required: true
+    - name: created_date
+      type: DATETIME
+    - name: last_updated
+      type: DATETIME
+    description: Represents a user dashboard displaying task progress.
+    info_list: Represents a user dashboard displaying task progress.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - dashboard_id
+      name: ProgressReportList
+      resource: ProgressReport
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Dashboard
+    user_key: id
+  Feedback:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: user_id
+      required: true
+    - name: feedback_date
+      required: true
+      type: DATETIME
+    - name: feedback_text
+      required: true
+    description: Represents feedback provided by users regarding the task system.
+    info_list: Represents feedback provided by users regarding the task system.
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Feedback
+    user_key: id
+  PriorityLevel:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: rank
+      required: true
+    - name: id
+    description: Defines different levels of priority for tasks.
+    info_list: Defines different levels of priority for tasks.
+    type: PriorityLevel
+    user_key: name
+  ProgressReport:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: dashboard_id
+      required: true
+    - name: report_date
+      required: true
+      type: DATETIME
+    - name: tasks_pending
+    - name: tasks_completed
+    description: Records detailed progress reports for tasks within a dashboard.
+    info_list: Records detailed progress reports for tasks within a dashboard.
+    tab_groups:
+    - direction: toone
+      fks:
+      - dashboard_id
+      name: dashboard
+      resource: Dashboard
+    type: ProgressReport
+    user_key: id
+  Reward:
+    attributes:
+    - label: ' description*'
+      name: description
+      required: true
+      search: true
+      sort: true
+    - name: points
+      required: true
+    - name: claim_deadline
+      type: DATETIME
+    - name: id
+    description: Represents a reward for completing tasks on time.
+    info_list: Represents a reward for completing tasks on time.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - reward_id
+      name: UserRewardList
+      resource: UserReward
+    type: Reward
+    user_key: description
+  Task:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: user_id
+      required: true
+    - name: title
+      required: true
+    - name: due_date
+      required: true
+      type: DATETIME
+    - name: priority
+      required: true
+    - name: id
+    - name: is_completed
+    description: Represents a task assigned to a user that needs to be completed.
+    info_list: Represents a task assigned to a user that needs to be completed.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - task_id
+      name: TaskCategoryList
+      resource: TaskCategory
+    - direction: tomany
+      fks:
+      - task_id
+      name: TaskHistoryList
+      resource: TaskHistory
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Task
+    user_key: description
+  TaskCategory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: category_id
+      required: true
+    - name: task_id
+      required: true
+    description: A junction table for tasks and categories, allowing many-to-many
+      relationship.
+    info_list: A junction table for tasks and categories, allowing many-to-many relationship.
+    tab_groups:
+    - direction: toone
+      fks:
+      - category_id
+      name: category
+      resource: Category
+    - direction: toone
+      fks:
+      - task_id
+      name: task
+      resource: Task
+    type: TaskCategory
+    user_key: id
+  TaskHistory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: task_id
+      required: true
+    - name: change_date
+      required: true
+      type: DATETIME
+    - name: status
+      required: true
+    description: Keeps a history of task status changes.
+    info_list: Keeps a history of task status changes.
+    tab_groups:
+    - direction: toone
+      fks:
+      - task_id
+      name: task
+      resource: Task
+    type: TaskHistory
+    user_key: id
+  User:
+    attributes:
+    - label: ' username*'
+      name: username
+      required: true
+      search: true
+      sort: true
+    - name: email
+      required: true
+    - name: join_date
+      type: DATETIME
+    - name: id
+    - name: password
+      required: true
+    description: Represents a user within the task management system.
+    info_list: Represents a user within the task management system.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - user_id
+      name: DailyGoalList
+      resource: DailyGoal
+    - direction: tomany
+      fks:
+      - user_id
+      name: DashboardList
+      resource: Dashboard
+    - direction: tomany
+      fks:
+      - user_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - user_id
+      name: TaskList
+      resource: Task
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserRewardList
+      resource: UserReward
+    type: User
+    user_key: username
+  UserReward:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: reward_id
+      required: true
+    - name: user_id
+      required: true
+    - name: claim_date
+      required: true
+      type: DATETIME
+    description: A junction table linking users and rewards they've claimed.
+    info_list: A junction table linking users and rewards they've claimed.
+    tab_groups:
+    - direction: toone
+      fks:
+      - reward_id
+      name: reward
+      resource: Reward
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: UserReward
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

@@ -1,0 +1,4 @@
+Create task planning app
+It should help to prioritize task and reprioritize time to time
+Dashboard that shows the progress
+Reward user for completing work on time

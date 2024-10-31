@@ -1,0 +1,89 @@
+<div class="container">
+<o-form-container breadcrumb="yes" breadcrumb-label-columns="description" breadcrumb-separator=", " class="fill-form">
+      <o-form #form attr="Reward_form_edit" 
+        service="Reward" 
+        entity="Reward" 
+        fxLayout="column" 
+        show-header="yes" 
+        header-actions="R;I;U;D"
+        #oDetailForm keys="id" 
+        keys-sql-types="INTEGER" 
+        show-header-navigation="yes"
+        (onDataLoaded)="onDataLoaded($event)">
+
+  <o-row attr="row1" layout-align="start stretch">
+    <div fxLayout="row wrap" fxLayoutAlign="start start" fxFlex fxLayoutGap="14px">
+      
+      <o-text-input #description attr="description" label=" description*" enabled="yes" required="yes" fxFlex="20%" class="form-field"></o-text-input>
+      
+      <o-integer-input #points attr="points" label="points" type="integer" editable="no" required="yes" ></o-integer-input>
+      
+      <o-date-input #claim_deadline attr="claim_deadline" type="timestamp" label="claim_deadline" editable="no" required="no" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+      
+      <o-integer-input #id attr="id" label="id" type="integer" editable="no" required="no" ></o-integer-input>
+      
+    </div>
+  </o-row>
+      
+      <mat-tab-group fxFill>
+        
+        <mat-tab label="USERREWARD-reward_id">
+    <div layout-padding>
+      <o-table 
+        attr="UserRewardTable" 
+        service="UserReward" 
+        entity="UserReward" 
+        keys="id"
+        parent-keys="reward_id:id"
+        columns="id;reward_id;user_id;claim_date"  
+        horizontal-scroll="yes"
+        detail-form-route="UserReward" 
+        edit-form-route="UserReward"
+        visible-columns="id;reward_id;user_id;claim_date"  
+        sort-columns="id" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+          <o-table-column attr="reward_id" title="reward_id">
+    <o-table-cell-renderer-service attr="reward_id" 
+        service="Reward" entity="RewardType" columns="id;description"
+        parent-keys="id:reward_id"
+        value-column="description" keys="reward_id"
+        visible-columns="description" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column attr="user_id" title="user_id">
+    <o-table-cell-renderer-service attr="user_id" 
+        service="User" entity="UserType" columns="id;username"
+        parent-keys="id:user_id"
+        value-column="username" keys="user_id"
+        visible-columns="username" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-date-input #claim_date attr="claim_date" type="timestamp" label="claim_date" editable="no" required="yes" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+      </mat-tab-group>
+      
+    </o-form>
+  </o-form-container>
+</div>
